@@ -1,6 +1,6 @@
 module.exports = {
 	name: "ping",
-	description: "Ping Command",
+	description: "Returns message sending latency",
 	execute(message) {
 		message.channel.send("Pinging...").then(msg => {
 			msg.edit(`Pong with a latency of ${msg.createdTimestamp - message.createdTimestamp}ms!`);
