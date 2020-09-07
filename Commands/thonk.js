@@ -4,7 +4,6 @@ const Canvas = require("canvas");
 module.exports = {
 	name: "thonk",
 	aliases: ["think", "thonkify"],
-	args: true,
 	usage: "<user>",
 	description: "Thonkifies the user specified",
 	async execute(message, args) {

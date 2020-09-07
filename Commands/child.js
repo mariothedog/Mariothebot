@@ -3,7 +3,6 @@ const Canvas = require("canvas");
 
 module.exports = {
 	name: "child",
-	args: true,
 	usage: "<user 1> <user 2>",
 	description: "Creates the child of two users",
 	async execute(message, args) {
