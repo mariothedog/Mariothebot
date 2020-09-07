@@ -54,6 +54,10 @@ client.on("message", message => {
 		return message.reply("That command does not exist!");
 	}
 
+	if (command.nsfw && !message.channel.nsfw) {
+		return message.reply("That command can only be used in an NSFW channel 😳");
+	}
+
 	try {
 		command.execute(message, args, prefixUsed);
 	}
