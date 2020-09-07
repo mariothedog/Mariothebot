@@ -18,6 +18,8 @@ for (const category of commandCategories) {
 	}
 }
 
+const db = require("quick.db");
+
 client.login(token);
 
 client.once("ready", () => {
@@ -29,8 +31,14 @@ client.once("ready", () => {
 	console.log("Ready!");
 });
 
-client.on("message", message => {
+client.on("message", async message => {
 	let hasPrefix = false;
+
+	const reactionChannels = db.get(`reactionChannels.${message.guild.id}`);
+	if (reactionChannels && reactionChannels.indexOf(message.channel.id) > -1) {
+		await message.react("😳");
+		await message.react("🥵");
+	}
 
 	if (message.author.bot) {
 		return;
@@ -59,6 +67,12 @@ client.on("message", message => {
 
 	if (command.nsfw && !message.channel.nsfw) {
 		return message.reply("That command can only be used in an NSFW channel 😳");
+	}
+
+	for (const permission of command.permissions) {
+		if (!message.member.guild.me.hasPermission(permission) && !message.member.guild.me.hasPermission("ADMINISTRATOR")) {
+			return message.reply(`You need the ${command.permissions.join(", ")} permissions to use the ${commandName} command!`);
+		}
 	}
 
 	try {
