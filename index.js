@@ -49,11 +49,10 @@ client.on("message", message => {
 	const args = message.content.slice(prefixUsed.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
-	if (!client.commands.has(commandName)) {
+	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	if (!command) {
 		return message.reply("That command does not exist!");
 	}
-
-	const command = client.commands.get(commandName);
 
 	try {
 		command.execute(message, args, prefixUsed);
