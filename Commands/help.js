@@ -10,8 +10,12 @@ module.exports = {
 			if (!command) {
 				message.reply("That command does not exist!");
 
-				const data = getCommandList(message.client, prefixUsed);
+				const data = getCommandList(message.client, prefixUsed, message.channel.nsfw);
 				return message.channel.send(data, { split: true });
+			}
+
+			if (command.nsfw && !message.channel.nsfw) {
+				return message.reply("That command can only be used in an NSFW channel 😳");
 			}
 
 			const data = [];
@@ -25,17 +29,22 @@ module.exports = {
 			return message.channel.send(data, { split: true });
 		}
 
-		const data = getCommandList(message.client, prefixUsed);
+		const data = getCommandList(message.client, prefixUsed, message.channel.nsfw);
 		return message.channel.send(data, { split: true });
 	},
 };
 
-function getCommandList(client, prefix) {
+function getCommandList(client, prefix, nsfwCommandsAllowed) {
 	const commands = client.commands;
 
 	const data = [];
 	data.push("__**Commands list:**__");
-	data.push(commands.map(command => `**${prefix}${command.name}** - ${command.description}`).join("\n"));
+	if (nsfwCommandsAllowed) {
+		data.push(commands.map(command => `**${prefix}${command.name}** - ${command.description}`).join("\n"));
+	}
+	else {
+		data.push(commands.filter(command => !command.nsfw).map(command => `**${prefix}${command.name}** - ${command.description}`).join("\n"));
+	}
 
 	return data;
 }
