@@ -18,6 +18,11 @@ for (const file of commandFiles) {
 client.login(token);
 
 client.once("ready", () => {
+	client.user.setPresence({
+		status: "online",
+		game: { name: "m!help | Made by Mariothedog#4707" },
+	});
+
 	console.log("Ready!");
 });
 
@@ -51,7 +56,7 @@ client.on("message", message => {
 	const command = client.commands.get(commandName);
 
 	try {
-		command.execute(message, prefixUsed, args);
+		command.execute(message, args, prefixUsed);
 	}
 	catch (error) {
 		console.error(error);

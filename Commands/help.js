@@ -2,7 +2,7 @@ module.exports = {
 	name: "help",
 	aliases: ["commands"],
 	description: "Returns a list of commands and their function",
-	execute(message, prefixUsed) {
+	execute(message, args, prefixUsed) {
 		const commands = message.client.commands;
 
 		const data = [];
