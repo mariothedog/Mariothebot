@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const Canvas = require("canvas");
+const util = require("../../util.js");
 
 module.exports = {
 	name: "thonk",
@@ -12,18 +13,12 @@ module.exports = {
 		if (mention) {
 			user = mention.user;
 		}
-		else {
+		else if (args.length > 0) {
 			const name = args[0].toLowerCase();
-
-			const member = await message.guild.members.cache.find(m =>
-				m.user.username.toLowerCase() === name ||
-				(m.nickname && m.nickname.toLowerCase() === name));
-			if (member) {
-				user = member.user;
-			}
-			if (!user) {
-				user = message.author;
-			}
+			user = await util.getUserOrDefault(message.guild, name, message.author, false);
+		}
+		else {
+			user = message.author;
 		}
 
 		const userAvatar = user.displayAvatarURL({ format: "png", size: 256 });
