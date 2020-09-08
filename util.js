@@ -8,8 +8,8 @@ module.exports = {
 		}
 		else {
 			member = await guild.members.cache.find(m =>
-				m.user.username.toLowerCase() === name ||
-				(m.nickname && m.nickname.toLowerCase() === name));
+				m.user.username.toLowerCase() === name.toLowerCase() ||
+				(m.nickname && m.nickname.toLowerCase() === name.toLowerCase()));
 		}
 
 		if (member) {

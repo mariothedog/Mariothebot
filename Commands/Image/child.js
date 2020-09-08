@@ -1,48 +1,46 @@
 const Discord = require("discord.js");
 const Canvas = require("canvas");
+const util = require("../../util.js");
 
 module.exports = {
 	name: "child",
 	usage: "<user 1> <user 2>",
 	description: "Creates the child of two users",
 	async execute(message, args) {
-		let userOne = args[0];
-		let userTwo = args[1];
+		let userOne;
+		let userTwo;
+
+		if (args.length == 0) {
+			return message.reply("please mention two users!");
+		}
+
+		const mentions = message.mentions.users.array();
+		userOne = mentions[0];
 
 		if (!userOne) {
-			return message.reply("Please mention two users.");
+			userOne = await util.getUserOrDefault(message.guild, args[0], null, false);
+
+			if (!userOne) {
+				return message.reply("please mention a valid user!");
+			}
 		}
 
-		let userOneID;
+		if (args.length > 1) {
+			userTwo = mentions[1];
+
+			if (!userTwo) {
+				userTwo = await util.getUserOrDefault(message.guild, args[1], null, false);
+			}
+		}
+
 		if (userOne && !userTwo) {
-			userOneID = message.author.id;
-
-			const tempUserTwo = userTwo;
-			userTwo = userOne;
-			userOne = tempUserTwo;
-		}
-		else {
-			userOneID = userOne.replace(/[\\<>@#&!]/g, "");
+			const tempUserOne = userOne;
+			userOne = message.author;
+			userTwo = tempUserOne;
 		}
 
-		const userTwoID = userTwo.replace(/[\\<>@#&!]/g, "");
-
-		let user1;
-		let user2;
-		try {
-			user1 = await message.client.users.fetch(userOneID);
-			user2 = await message.client.users.fetch(userTwoID);
-		}
-		catch {
-			return "Please mention two users.";
-		}
-
-		if (!user1 || !user2) {
-			return "Please mention two users.";
-		}
-
-		const userOneAvatar = user1.displayAvatarURL({ format: "png", size: 256 });
-		const userTwoAvatar = user2.displayAvatarURL({ format: "png", size: 256 });
+		const userOneAvatar = userOne.displayAvatarURL({ format: "png", size: 256 });
+		const userTwoAvatar = userTwo.displayAvatarURL({ format: "png", size: 256 });
 
 		const canvas = Canvas.createCanvas(256, 256);
 		const ctx = canvas.getContext("2d");
