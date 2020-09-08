@@ -1,7 +1,7 @@
 module.exports = {
-	async getUserOrDefault(guild, name, defaultUser, caseSensitive) {
+	async getUserOrDefault(guild, name, defaultUser, isCaseSensitive) {
 		let member;
-		if (caseSensitive) {
+		if (isCaseSensitive) {
 			member = await guild.members.cache.find(m =>
 				m.user.username === name ||
 				(m.nickname && m.nickname === name));
