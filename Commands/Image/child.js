@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 const Canvas = require("canvas");
 const util = require("../../util.js");
 
+const size = 256;
+
 module.exports = {
 	name: "child",
 	usage: "<user 1> <user 2>",
@@ -39,39 +41,26 @@ module.exports = {
 			userTwo = tempUserOne;
 		}
 
-		const userOneAvatar = userOne.displayAvatarURL({ format: "png", size: 256 });
-		const userTwoAvatar = userTwo.displayAvatarURL({ format: "png", size: 256 });
+		const userOneAvatar = userOne.displayAvatarURL({ format: "png", size: size });
+		const userTwoAvatar = userTwo.displayAvatarURL({ format: "png", size: size });
 
-		const canvas = Canvas.createCanvas(256, 256);
+		const canvas = Canvas.createCanvas(size, size);
 		const ctx = canvas.getContext("2d");
 
-		let background;
-		try {
-			background = await Canvas.loadImage(userOneAvatar);
-		}
-		catch (err) {
-			return "Please mention two users.";
-		}
+		const background = await Canvas.loadImage(userOneAvatar);
+		ctx.drawImage(background, 0, 0, size, size);
 
-		ctx.drawImage(background, 0, 0, 256, 256);
-
-		let avatar;
-		try {
-			avatar = await Canvas.loadImage(userTwoAvatar);
-		}
-		catch (err) {
-			return "Please mention two users.";
-		}
+		const avatar = await Canvas.loadImage(userTwoAvatar);
 
 		ctx.beginPath();
-		ctx.moveTo(128, 0);
-		ctx.lineTo(256, 0);
-		ctx.lineTo(256, 256);
-		ctx.lineTo(128, 256);
+		ctx.moveTo(size / 2, 0);
+		ctx.lineTo(size, 0);
+		ctx.lineTo(size, size);
+		ctx.lineTo(size / 2, size);
 		ctx.closePath();
 		ctx.clip();
 
-		ctx.drawImage(avatar, 0, 0, 256, 256);
+		ctx.drawImage(avatar, 0, 0, size, size);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
 		return message.reply(attachment);
