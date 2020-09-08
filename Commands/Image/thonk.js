@@ -14,8 +14,7 @@ module.exports = {
 			user = mention.user;
 		}
 		else if (args.length > 0) {
-			const name = args[0].toLowerCase();
-			user = await util.getUserOrDefault(message.guild, name, message.author, false);
+			user = await util.getUserOrDefault(message.guild, args[0], message.author, false);
 		}
 		else {
 			user = message.author;
