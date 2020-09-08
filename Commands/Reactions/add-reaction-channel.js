@@ -7,15 +7,12 @@ module.exports = {
 	description: "Makes the specified channel a reaction channel which means every message will automatically have a reaction added to it",
 	async execute(message, args) {
 		let channelID = args[0];
-		if (!channelID) {
-			channelID = message.channel.id;
-		}
 
 		channelID = channelID.replace(/[\\<>@#&!]/g, "");
 
 		// If channel does not exist
 		if (!message.guild.channels.cache.find(c => c.id == channelID)) {
-			channelID = message.channel.id;
+			return message.reply("Please specify a channel!");
 		}
 
 		const emojiArgs = args.splice(1);
@@ -28,7 +25,6 @@ module.exports = {
 			}
 
 			const emoji = message.client.emojis.cache.get(emojiArg);
-			console.log(isEmoji(emojiArg));
 			if (emoji) {
 				emojis.push(emoji);
 			}
@@ -46,7 +42,7 @@ module.exports = {
 			"emojis": emojis,
 		});
 
-		return message.reply("The reaction channel has been added.");
+		return message.reply(`The reaction channel has been added with the following emojis: ${emojis.join(", ")}`);
 	},
 };
 
