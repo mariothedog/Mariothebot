@@ -13,7 +13,7 @@ module.exports = {
 		let userTwo;
 
 		if (args.length == 0) {
-			return message.reply("please mention two users!");
+			return message.reply("Please mention two users!");
 		}
 
 		const mentions = message.mentions.users.array();
@@ -23,7 +23,7 @@ module.exports = {
 			userOne = await util.getUserOrDefault(message.guild, args[0], null, false);
 
 			if (!userOne) {
-				return message.reply("please mention a valid user!");
+				return message.reply("Please mention a valid user!");
 			}
 		}
 
