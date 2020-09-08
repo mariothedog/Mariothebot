@@ -38,12 +38,7 @@ module.exports = {
 		}
 
 		if (invalidEmojis.length > 0) {
-			if (invalidEmojis.length == 1) {
-				return message.reply(`${invalidEmojis.join(", ")} is invalid!`);
-			}
-			else {
-				return message.reply(`${invalidEmojis.join(", ")} are invalid!`);
-			}
+			return message.reply(`${invalidEmojis.join(", ")} ${invalidEmojis.length == 1 ? "is" : "are"} invalid!`);
 		}
 
 		db.push(`reactionChannels.${message.guild.id}`, {
