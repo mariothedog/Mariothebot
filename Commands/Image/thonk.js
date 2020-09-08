@@ -13,7 +13,14 @@ module.exports = {
 			user = mention.user;
 		}
 		else {
-			user = await message.client.users.cache.find(u => u.username === args[0]);
+			const name = args[0].toLowerCase();
+
+			const member = await message.guild.members.cache.find(m =>
+				m.user.username.toLowerCase() === name ||
+				(m.nickname && m.nickname.toLowerCase() === name));
+			if (member) {
+				user = member.user;
+			}
 			if (!user) {
 				user = message.author;
 			}
