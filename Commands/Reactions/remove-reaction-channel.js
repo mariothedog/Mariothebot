@@ -14,7 +14,7 @@ module.exports = {
 		channelID = channelID.replace(/[\\<>@#&!]/g, "");
 
 		const newList = db.get(`reactionChannels.${message.guild.id}`).filter(function(value) {
-			return value != channelID;
+			return value.channelID != channelID;
 		});
 		db.set(`reactionChannels.${message.guild.id}`, newList);
 

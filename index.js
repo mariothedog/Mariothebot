@@ -35,9 +35,14 @@ client.on("message", async message => {
 	let hasPrefix = false;
 
 	const reactionChannels = db.get(`reactionChannels.${message.guild.id}`);
-	if (reactionChannels && reactionChannels.indexOf(message.channel.id) > -1) {
-		await message.react("😳");
-		await message.react("🥵");
+	if (reactionChannels) {
+		const channelIndex = reactionChannels.map(c => c.channelID).indexOf(message.channel.id);
+		if (channelIndex > -1) {
+			const emojis = reactionChannels[channelIndex].emojis;
+			for (const emoji of emojis) {
+				await message.react(emoji);
+			}
+		}
 	}
 
 	if (message.author.bot) {
