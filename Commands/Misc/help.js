@@ -24,7 +24,7 @@ module.exports = {
 			if (command.aliases) {
 				data.push(`**Aliases:** ${command.aliases.join(", ")}`);
 			}
-			data.push(`**Usage:** ${prefixUsed}${commandName} ${command.usage}`);
+			data.push(`**Usage:** ${prefixUsed}${commandName} ${command.usage ? command.usage : ""}`);
 
 			return message.channel.send(data, { split: true });
 		}
