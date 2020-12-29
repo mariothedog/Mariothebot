@@ -6,6 +6,10 @@ module.exports = {
 	permissions: ["MANAGE_CHANNELS"],
 	description: "Makes the specified channel a reaction channel which means every message will automatically have a reaction added to it",
 	async execute(message, args) {
+		if (args.length == 0) {
+			return false;
+		}
+
 		let channelID = args[0];
 
 		channelID = channelID.replace(/[\\<>@#&!]/g, "");

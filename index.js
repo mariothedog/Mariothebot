@@ -39,7 +39,11 @@ client.on("message", async message => {
 	if (reactionChannels && channelID in reactionChannels) {
 		const emojis = reactionChannels[channelID];
 		for (const emoji of emojis) {
-			await message.react(emoji);
+			await message.react(emoji)
+				.catch(e => {
+					console.log(`Error caught while reacting with the emoji "${emoji}":`);
+					console.log(e);
+				});
 		}
 	}
 
@@ -83,10 +87,12 @@ client.on("message", async message => {
 	}
 
 	try {
-		command.execute(message, args, prefixUsed);
+		if (!await command.execute(message, args, prefixUsed)) {
+			return message.reply(`Invalid Usage! Correct usage: ${prefixUsed}${commandName} ${command.usage}`);
+		}
 	}
 	catch (error) {
 		console.error(error);
-		message.reply("There was an issue executing that command!");
+		return message.reply("There was an issue executing that command!");
 	}
 });
