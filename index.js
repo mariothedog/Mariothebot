@@ -33,15 +33,13 @@ client.once("ready", () => {
 
 client.on("message", async message => {
 	let hasPrefix = false;
+	const channelID = message.channel.id;
 
 	const reactionChannels = db.get(`reactionChannels.${message.guild.id}`);
-	if (reactionChannels) {
-		const channelIndex = reactionChannels.map(c => c.channelID).indexOf(message.channel.id);
-		if (channelIndex > -1) {
-			const emojis = reactionChannels[channelIndex].emojis;
-			for (const emoji of emojis) {
-				await message.react(emoji);
-			}
+	if (reactionChannels && channelID in reactionChannels) {
+		const emojis = reactionChannels[channelID];
+		for (const emoji of emojis) {
+			await message.react(emoji);
 		}
 	}
 

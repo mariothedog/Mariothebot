@@ -13,10 +13,14 @@ module.exports = {
 
 		channelID = channelID.replace(/[\\<>@#&!]/g, "");
 
-		const newList = db.get(`reactionChannels.${message.guild.id}`).filter(function(value) {
-			return value.channelID != channelID;
-		});
-		db.set(`reactionChannels.${message.guild.id}`, newList);
+		const dbPath = `reactionChannels.${message.guild.id}`;
+		const dbReactionChannels = db.get(dbPath);
+		if (!(channelID in dbReactionChannels)) {
+			return message.reply("No reaction channel found!");
+		}
+
+		delete dbReactionChannels[channelID];
+		db.set(dbPath, dbReactionChannels);
 
 		return message.reply("The reaction channel has been removed.");
 	},

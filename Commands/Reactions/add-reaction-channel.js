@@ -10,12 +10,13 @@ module.exports = {
 
 		channelID = channelID.replace(/[\\<>@#&!]/g, "");
 
-		// If channel does not exist
+		let emojiSpliceIndex = 1;
 		if (!message.guild.channels.cache.find(c => c.id == channelID)) {
-			return message.reply("Please specify a channel!");
+			channelID = message.channel.id;
+			emojiSpliceIndex = 0;
 		}
 
-		const emojiArgs = args.splice(1);
+		const emojiArgs = args.splice(emojiSpliceIndex);
 		const emojis = [];
 		const invalidEmojis = [];
 		for (const emojiArg of emojiArgs) {
@@ -37,10 +38,14 @@ module.exports = {
 			return message.reply(`${invalidEmojis.join(", ")} ${invalidEmojis.length == 1 ? "is" : "are"} invalid!`);
 		}
 
-		db.push(`reactionChannels.${message.guild.id}`, {
-			"channelID": channelID,
-			"emojis": emojis,
-		});
+		const dbPath = `reactionChannels.${message.guild.id}`;
+		let dbReactionChannels = db.get(dbPath);
+		if (!dbReactionChannels) {
+			dbReactionChannels = {};
+		}
+
+		dbReactionChannels[channelID] = emojis;
+		db.set(dbPath, dbReactionChannels);
 
 		return message.reply(`The reaction channel has been added with the following emojis: ${emojis.join(", ")}`);
 	},
