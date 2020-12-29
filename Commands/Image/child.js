@@ -13,7 +13,7 @@ module.exports = {
 		let userTwo;
 
 		if (args.length == 0) {
-			return message.reply("Please mention two users!");
+			return false;
 		}
 
 		const mentions = message.mentions.users.array();
@@ -23,7 +23,7 @@ module.exports = {
 			userOne = await util.getUserOrDefault(message.guild, args[0], null, false);
 
 			if (!userOne) {
-				return message.reply("Please mention a valid user!");
+				return false;
 			}
 		}
 
@@ -63,6 +63,7 @@ module.exports = {
 		ctx.drawImage(avatar, 0, 0, size, size);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
-		return message.reply(attachment);
+		message.reply(attachment);
+		return true;
 	},
 };
