@@ -74,10 +74,12 @@ client.on("message", async message => {
 		return message.reply("That command can only be used in an NSFW channel 😳");
 	}
 
-	if (command.permissions) {
-		for (const permission of command.permissions) {
-			if (!message.member.guild.me.hasPermission(permission) && !message.member.guild.me.hasPermission("ADMINISTRATOR")) {
-				return message.reply(`You need the ${command.permissions.join(", ")} permissions to use the ${commandName} command!`);
+	const permissions = command.permissions;
+	const member = message.member;
+	if (permissions && !member.hasPermission("ADMINISTRATOR")) {
+		for (const permission of permissions) {
+			if (!member.hasPermission(permission)) {
+				return message.reply(`You need the ${permissions.join(", ")} permission${permissions.length > 1 ? "s" : ""} to use the ${commandName} command!`);
 			}
 		}
 	}
