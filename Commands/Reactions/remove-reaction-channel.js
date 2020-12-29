@@ -16,12 +16,14 @@ module.exports = {
 		const dbPath = `reactionChannels.${message.guild.id}`;
 		const dbReactionChannels = db.get(dbPath);
 		if (!(channelID in dbReactionChannels)) {
-			return message.reply("No reaction channel found!");
+			message.reply("No reaction channel found!");
+			return true;
 		}
 
 		delete dbReactionChannels[channelID];
 		db.set(dbPath, dbReactionChannels);
 
-		return message.reply("The reaction channel has been removed.");
+		message.reply("The reaction channel has been removed.");
+		return true;
 	},
 };
