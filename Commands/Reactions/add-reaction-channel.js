@@ -39,7 +39,8 @@ module.exports = {
 		}
 
 		if (invalidEmojis.length > 0) {
-			return message.reply(`${invalidEmojis.join(", ")} ${invalidEmojis.length == 1 ? "is" : "are"} invalid!`);
+			message.reply(`${invalidEmojis.join(", ")} ${invalidEmojis.length == 1 ? "is" : "are"} invalid!`);
+			return true;
 		}
 
 		const dbPath = `reactionChannels.${message.guild.id}`;
@@ -51,7 +52,8 @@ module.exports = {
 		dbReactionChannels[channelID] = emojis;
 		db.set(dbPath, dbReactionChannels);
 
-		return message.reply(`The reaction channel has been added with the following emojis: ${emojis.join(", ")}`);
+		message.reply(`The reaction channel has been added with the following emojis: ${emojis.join(", ")}`);
+		return true;
 	},
 };
 
