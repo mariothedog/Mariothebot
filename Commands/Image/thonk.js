@@ -40,6 +40,7 @@ module.exports = {
 		ctx.drawImage(think_hand, 0, 0, 256, 256);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
-		return message.reply(attachment);
+		message.reply(attachment);
+		return true;
 	},
 };
