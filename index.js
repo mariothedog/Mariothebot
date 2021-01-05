@@ -34,6 +34,10 @@ client.on("message", async message => {
 	let hasPrefix = false;
 	const channelID = message.channel.id;
 
+	if (message.author.bot) {
+		return;
+	}
+
 	const reactionChannels = db.get(`reactionChannels.${message.guild.id}`);
 	if (reactionChannels && channelID in reactionChannels) {
 		const emojis = reactionChannels[channelID];
@@ -44,10 +48,6 @@ client.on("message", async message => {
 					console.log(e);
 				});
 		}
-	}
-
-	if (message.author.bot) {
-		return;
 	}
 
 	let prefixUsed;
