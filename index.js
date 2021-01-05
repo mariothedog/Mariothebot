@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const db = require("quick.db");
 
 const {
 	token,
@@ -17,8 +18,6 @@ for (const category of commandCategories) {
 		client.commands.set(command.name, command);
 	}
 }
-
-const db = require("quick.db");
 
 client.login(token);
 
